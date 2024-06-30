@@ -12,6 +12,7 @@ namespace MiaPlazaProjectTask.Pages
     public class MohsPage
     {
         private readonly IWebDriver driver;
+        private readonly Random random = new Random();
 
 
         public MohsPage(IWebDriver driver)
@@ -66,10 +67,10 @@ namespace MiaPlazaProjectTask.Pages
             {
                 FirstNameField, LastNameField, EmailField, PhoneNumberField, SearchEngineCheckbox, MiaPrepWebsiteCheckbox, MiacademyWebsiteCheckbox, AlwaysIceCreamWebsiteCheckbox, CleverDragonsWebsiteCheckbox, FacebookInstagramAdsCheckbox, FacebookMohsPostGroupCheckbox, FaebookGeneralHomeSchoolingCheckbox, TikTokCheckbox, OtherSocialMediaChecbox, WordOfMouthCheckbox, OtherCheckbox, PreferredStartDateSelect, NextButton
             };
-            foreach(var element in elements)
+            foreach (var element in elements)
             {
                 Assert.That(IsElementDisplayed(element), Is.True, $"{element.GetAttribute("name")} field is not displayed.");
-            }  
+            }
         }
 
         /// <summary>
@@ -91,7 +92,7 @@ namespace MiaPlazaProjectTask.Pages
             catch (NoSuchElementException ex)
             {
                 Console.WriteLine($"Element not found: {ex.Message}");
-                Assert.Fail( ex.Message );
+                Assert.Fail(ex.Message);
                 return false;
             }
             catch (Exception ex)
@@ -185,17 +186,6 @@ namespace MiaPlazaProjectTask.Pages
         }
 
         /// <summary>
-        /// Selects multiple checkboxes using the SelectCheckbox method.
-        /// </summary>
-        private void SelectElements()
-        {
-            SelectCheckbox(SearchEngineCheckbox);
-            SelectCheckbox(CleverDragonsWebsiteCheckbox);
-            SelectCheckbox(TikTokCheckbox);
-            Console.WriteLine("The checkboxes are selected!");
-        }
-
-        /// <summary>
         /// Enters a preferred start date into the PreferredStartDateSelect field.
         /// </summary>
         /// <param name="daysToAdd">Number of days to add to the current date.</param>
@@ -221,14 +211,14 @@ namespace MiaPlazaProjectTask.Pages
         /// Populates all required fields on the page including first name, last name, email, phone number,
         /// second parent information, checkboxes, preferred start date, and clicks on the Next button.
         /// </summary>
-        public void PopulateAllRequiredFields()
+        public void PopulateAllRequiredFields(string secondParent, int chechboxNumber)
         {
             PopulateFirstNameField();
             PopulateLastNameField();
             PopulateEmialField();
             PopulatePhoneField();
-            ChooseInformationForSecondParent("No");
-            SelectElements();
+            ChooseInformationForSecondParent(secondParent);
+            SelectRandomlyOptionsForHowDidYouHearAboutUs(chechboxNumber);
             EnterPreferredStartDate(15);
             ClickOnNextButton();
         }
@@ -242,6 +232,86 @@ namespace MiaPlazaProjectTask.Pages
             WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
             wait.Until(driver => StudentInformationHeading.Displayed);
             Console.WriteLine("The Student Information page is displayed");
+        }
+
+        /// <summary>
+        /// Selects a specified number of checkboxes randomly from a given list of checkbox elements.
+        /// </summary>
+        /// <param name="numberOfSelections">The number of checkboxes to select.</param>
+        private void SelectRandomlyOptionsForHowDidYouHearAboutUs(int numberOfSelections)
+        {
+            var checkboxElements = driver.FindElements(By.XPath("//li[@id = 'Checkbox-li']//input[contains(@id, 'Checkbox')]"));
+
+            if (numberOfSelections > checkboxElements.Count)
+            {
+                throw new ArgumentException("Number of selections exceeds the total number of checkboxes.");
+            }
+
+            List<IWebElement> checkboxList = new List<IWebElement>(checkboxElements);
+            Shuffle(checkboxList);
+
+            int selectedCount = 0;
+
+            foreach (var checkbox in checkboxList)
+            {
+                if (selectedCount >= numberOfSelections)
+                {
+                    break;
+                }
+
+                if (!checkbox.Selected)
+                {
+                    try
+                    {
+                        ((IJavaScriptExecutor)driver).ExecuteScript("arguments[0].scrollIntoView(true);", checkbox);
+                        bool clicked = SelectRandomlyCheckboxes(checkbox);
+                        if (clicked)
+                        {
+                            selectedCount++;
+                            Console.WriteLine($"Selected checkbox: {checkbox.GetAttribute("value")}");
+                        }
+                        else
+                        {
+                            Console.WriteLine($"Failed to select checkbox: {checkbox.GetAttribute("value")}");
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"Error processing checkbox: {ex.Message}");
+                    }
+                }
+            }
+            if (selectedCount < numberOfSelections)
+            {
+                throw new Exception($"Could only select {selectedCount} checkboxes out of the requested {numberOfSelections}.");
+            }
+        }
+
+        private bool SelectRandomlyCheckboxes(IWebElement checkbox)
+        {
+            ((IJavaScriptExecutor)driver).ExecuteScript("arguments[0].click();", checkbox);
+            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(2));
+            wait.Until(driver => checkbox.Selected);
+            bool clicked = checkbox.Selected;
+            return clicked;
+        }
+
+        /// <summary>
+        /// Shuffles a list of elements randomly.
+        /// </summary>
+        /// <typeparam name="T">The type of elements in the list.</typeparam>
+        /// <param name="list">The list to shuffle.</param>
+        private void Shuffle<T>(List<T> list)
+        {
+            int n = list.Count;
+            while (n > 1)
+            {
+                n--;
+                int k = random.Next(n + 1);
+                T value = list[k];
+                list[k] = list[n];
+                list[n] = value;
+            }
         }
     }
 }
