@@ -16,6 +16,9 @@ namespace MiaPlazaProjectTask.Pages
 
         private IWebElement ApplyToOurSchoolButton => driver.FindElement(By.XPath("//div[@class='wp-block-button']/a[contains(@href, 'forms.zohopublic.com')]"));
 
+        /// <summary>
+        /// Verifies that the title of the MiaPrep page matches "MiaPrep Online High School - MiaPrep".
+        /// </summary>
         public void VerifyTitleOnMiaPrepPage()
         {
             WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
@@ -24,6 +27,10 @@ namespace MiaPlazaProjectTask.Pages
             Console.WriteLine("Title is : " + driver.Title);
         }
 
+        /// <summary>
+        /// Checks if the ApplyToOurSchoolButton element is displayed on the page.
+        /// </summary>
+        /// <returns>True if the ApplyToOurSchoolButton element is displayed, false otherwise.</returns>
         public Boolean IsElementDisplayed()
         {
             if (ApplyToOurSchoolButton.Displayed)
@@ -37,6 +44,9 @@ namespace MiaPlazaProjectTask.Pages
             }
         }
 
+        /// <summary>
+        /// Clicks on the ApplyToOurSchoolButton element.
+        /// </summary>
         public void ClickOnTheApplyToOurSchoolButton()
         {
             ApplyToOurSchoolButton.Click();

@@ -40,6 +40,10 @@ namespace MiaPlazaProjectTask.Pages
         private IWebElement NextButton => driver.FindElement(By.XPath("//button[contains(@aria-label, 'Next') and contains(@aria-label, 'Navigates to page 2 out of 3')]"));
         private IWebElement StudentInformationHeading => driver.FindElement(By.Id("Section3-li"));
 
+        /// <summary>
+        /// Verifies that the title of the page matches the expected title for MOHS Initial Application.
+        /// Waits up to 10 seconds for the title to match before asserting.
+        /// </summary>
         public void VerifyTitleOnMohsPage()
         {
             WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
@@ -48,6 +52,11 @@ namespace MiaPlazaProjectTask.Pages
             Console.WriteLine("Title is : " + driver.Title);
         }
 
+
+        /// <summary>
+        /// Verifies that all elements on the page are displayed.
+        /// Throws an assertion error if any element is not displayed.
+        /// </summary>
         public void VerifyAllElementsAreDisplayed()
         {
             // Wait for the SecondParentGuardianSelect element to be visible
@@ -60,10 +69,15 @@ namespace MiaPlazaProjectTask.Pages
             foreach(var element in elements)
             {
                 Assert.That(IsElementDisplayed(element), Is.True, $"{element.GetAttribute("name")} field is not displayed.");
-            }
-            
+            }  
         }
-        
+
+        /// <summary>
+        /// Checks if an element is displayed on the page.
+        /// Scrolls the element into view and returns true if displayed, false otherwise.
+        /// </summary>
+        /// <param name="element">The WebElement to check.</param>
+        /// <returns>True if the element is displayed, false otherwise.</returns>
         private bool IsElementDisplayed(IWebElement element)
         {
             try
@@ -87,6 +101,9 @@ namespace MiaPlazaProjectTask.Pages
             }
         }
 
+        /// <summary>
+        /// Populates the first name field with a randomly generated string.
+        /// </summary>
         private void PopulateFirstNameField()
         {
             string randomFirstName = RandomStringGenerator.GenerateRandomString(8);
@@ -94,6 +111,9 @@ namespace MiaPlazaProjectTask.Pages
             Console.WriteLine("Entered random first name: " + randomFirstName);
         }
 
+        /// <summary>
+        /// Populates the last name field with a randomly generated string.
+        /// </summary>
         private void PopulateLastNameField()
         {
             string randomLastName = RandomStringGenerator.GenerateRandomString(13);
@@ -101,6 +121,9 @@ namespace MiaPlazaProjectTask.Pages
             Console.WriteLine("Entered random last name: " + randomLastName);
         }
 
+        /// <summary>
+        /// Populates the email field with a randomly generated email address.
+        /// </summary>
         private void PopulateEmialField()
         {
             string email = RandomStringGenerator.GenerateRandomString(5);
@@ -108,6 +131,9 @@ namespace MiaPlazaProjectTask.Pages
             Console.WriteLine("The email field is populated with: " + email + "@gmail.com");
         }
 
+        /// <summary>
+        /// Populates the phone number field with a randomly generated numeric string.
+        /// </summary>
         private void PopulatePhoneField()
         {
             string phoneNumber = RandomStringGenerator.GenerateRandomNumericString(12);
@@ -115,6 +141,11 @@ namespace MiaPlazaProjectTask.Pages
             Console.WriteLine("Phone number field is populated with: " + phoneNumber);
         }
 
+        /// <summary>
+        /// Chooses the option for the second parent or guardian from a dropdown list.
+        /// Options: Yes or No
+        /// </summary>
+        /// <param name="value">The value of the option to be selected.</param>
         private void ChooseInformationForSecondParent(string value)
         {
             SecondParentGuardianSelect.Click();
@@ -126,6 +157,10 @@ namespace MiaPlazaProjectTask.Pages
             Console.WriteLine($"Selected option: {value}");
         }
 
+        /// <summary>
+        /// Selects a checkbox element, scrolling it into view if necessary, and handles click operations.
+        /// </summary>
+        /// <param name="checkbox">The checkbox element to be selected.</param>
         private void SelectCheckbox(IWebElement checkbox)
         {
             try
@@ -149,6 +184,9 @@ namespace MiaPlazaProjectTask.Pages
             }
         }
 
+        /// <summary>
+        /// Selects multiple checkboxes using the SelectCheckbox method.
+        /// </summary>
         private void SelectElements()
         {
             SelectCheckbox(SearchEngineCheckbox);
@@ -157,6 +195,10 @@ namespace MiaPlazaProjectTask.Pages
             Console.WriteLine("The checkboxes are selected!");
         }
 
+        /// <summary>
+        /// Enters a preferred start date into the PreferredStartDateSelect field.
+        /// </summary>
+        /// <param name="daysToAdd">Number of days to add to the current date.</param>
         private void EnterPreferredStartDate(int daysToAdd)
         {
             string futureDate = DateUtils.GetFutureDate(daysToAdd);
@@ -164,6 +206,9 @@ namespace MiaPlazaProjectTask.Pages
             Console.WriteLine("The future date is entered: " + futureDate);
         }
 
+        /// <summary>
+        /// Clicks on the NextButton after ensuring it is clickable.
+        /// </summary>
         private void clickOnNextButton()
         {
             BasePage basePage = new BasePage(driver);
@@ -172,6 +217,10 @@ namespace MiaPlazaProjectTask.Pages
             Console.WriteLine("The next button is clicked");
         }
 
+        /// <summary>
+        /// Populates all required fields on the page including first name, last name, email, phone number,
+        /// second parent information, checkboxes, preferred start date, and clicks on the Next button.
+        /// </summary>
         public void populateAllRequiredFields()
         {
             PopulateFirstNameField();
@@ -184,6 +233,10 @@ namespace MiaPlazaProjectTask.Pages
             clickOnNextButton();
         }
 
+        /// <summary>
+        /// Validates that the Student Information page is displayed by waiting for the StudentInformationHeading
+        /// element to be visible.
+        /// </summary>
         public void ValidateStudentInformationPageIsDisplayed()
         {
             WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
