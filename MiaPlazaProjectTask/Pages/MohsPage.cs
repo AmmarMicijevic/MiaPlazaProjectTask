@@ -24,7 +24,6 @@ namespace MiaPlazaProjectTask.Pages
         private IWebElement EmailField => driver.FindElement(By.Id("Email-arialabel"));
         private IWebElement PhoneNumberField => driver.FindElement(By.XPath("//input[@name='PhoneNumber']"));
         private IWebElement SecondParentGuardianSelect => driver.FindElement(By.Id("select2-Dropdown-arialabel-container"));
-        private ReadOnlyCollection<IWebElement> CheckboxElements => driver.FindElements(By.XPath("//label[@id='Checkbox-arialabel']/following-sibling::div//input[@type='checkbox']"));
         private IWebElement SearchEngineCheckbox => driver.FindElement(By.XPath("//label[./em[contains(text(), 'Search Engine')]]"));
         private IWebElement MiaPrepWebsiteCheckbox => driver.FindElement(By.XPath("//label[./em[contains(text(), 'MiaPrep website')]]"));
         private IWebElement MiacademyWebsiteCheckbox => driver.FindElement(By.XPath("//label[./em[contains(text(), 'Miacademy website')]]"));
