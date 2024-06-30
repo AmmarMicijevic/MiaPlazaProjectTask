@@ -287,6 +287,11 @@ namespace MiaPlazaProjectTask.Pages
             }
         }
 
+        /// <summary>
+        /// Clicks the checkbox using JavaScript and waits for it to be selected.
+        /// </summary>
+        /// <param name="checkbox">The checkbox element to be clicked.</param>
+        /// <returns>True if the checkbox was successfully clicked and selected, otherwise false.</returns>
         private bool SelectRandomlyCheckboxes(IWebElement checkbox)
         {
             ((IJavaScriptExecutor)driver).ExecuteScript("arguments[0].click();", checkbox);
