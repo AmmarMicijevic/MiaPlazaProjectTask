@@ -209,7 +209,7 @@ namespace MiaPlazaProjectTask.Pages
         /// <summary>
         /// Clicks on the NextButton after ensuring it is clickable.
         /// </summary>
-        private void clickOnNextButton()
+        private void ClickOnNextButton()
         {
             BasePage basePage = new BasePage(driver);
             basePage.WaitForElementToBeClickable(NextButton);
@@ -221,7 +221,7 @@ namespace MiaPlazaProjectTask.Pages
         /// Populates all required fields on the page including first name, last name, email, phone number,
         /// second parent information, checkboxes, preferred start date, and clicks on the Next button.
         /// </summary>
-        public void populateAllRequiredFields()
+        public void PopulateAllRequiredFields()
         {
             PopulateFirstNameField();
             PopulateLastNameField();
@@ -230,7 +230,7 @@ namespace MiaPlazaProjectTask.Pages
             ChooseInformationForSecondParent("No");
             SelectElements();
             EnterPreferredStartDate(15);
-            clickOnNextButton();
+            ClickOnNextButton();
         }
 
         /// <summary>
