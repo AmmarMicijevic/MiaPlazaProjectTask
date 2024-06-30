@@ -211,7 +211,7 @@ namespace MiaPlazaProjectTask.Pages
         /// Populates all required fields on the page including first name, last name, email, phone number,
         /// second parent information, checkboxes, preferred start date, and clicks on the Next button.
         /// </summary>
-        public void PopulateAllRequiredFields(string secondParent, int chechboxNumber)
+        public void PopulateAllRequiredFields(string secondParent, int chechboxNumber, int daysToAdd)
         {
             PopulateFirstNameField();
             PopulateLastNameField();
@@ -219,7 +219,7 @@ namespace MiaPlazaProjectTask.Pages
             PopulatePhoneField();
             ChooseInformationForSecondParent(secondParent);
             SelectRandomlyOptionsForHowDidYouHearAboutUs(chechboxNumber);
-            EnterPreferredStartDate(15);
+            EnterPreferredStartDate(daysToAdd);
             ClickOnNextButton();
         }
 

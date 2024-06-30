@@ -16,7 +16,7 @@ namespace MiaPlazaProjectTask.Tests
             miaPrepPage.ClickOnTheApplyToOurSchoolButton();
             mohsPage.VerifyTitleOnMohsPage();
             mohsPage.VerifyAllElementsAreDisplayed();
-            mohsPage.PopulateAllRequiredFields("No", 6);
+            mohsPage.PopulateAllRequiredFields("No", 6, 15);
             mohsPage.ValidateStudentInformationPageIsDisplayed();
         }
     }
